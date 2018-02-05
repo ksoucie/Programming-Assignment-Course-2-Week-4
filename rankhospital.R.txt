@@ -1,0 +1,95 @@
+##NOTE: Need to add ORDER() in here somewhere
+
+rank_helper<- function(data, col, state, num){
+
+	## Separate the state data: all the rows in column 7 that are = to the input state
+	state_subset <- data[data[, 7] == state]
+
+	## Separate the column with the desired outcome
+	outcome_subset <- state_subset[, col]
+
+	## Hospital names object to simplify rank_order function
+	hosp_names <- state_subset[, 2]
+
+	##Xiaodan Code
+	## first element of the dimension of state_subset contains all the rows 
+	## of outcome_subset without NA values, and all columns of state_subset
+	## [1] refers to the number of rows. whereas [2] would be columns
+	len <- dim(state_subset[!is.na(outcome_subset), ])[1]
+
+	## find the rank number within outcome_subset 
+	if (num == "best") {
+		rank_index <- min(outcome_subset, na.rm = TRUE)	
+	} elseif (num == "worst") {
+		rank_index <- max(outcome_subset,na.rm = TRUE)
+	} elseif (num > len) {
+		rank <- NA
+	else {
+		rank_index <- rank_order(hosp_names, outcome_subset,num) 	##not sure about this line, test in console
+	}
+
+
+	## Determine which object is associated with the min
+	num_index <- which(outcome_subset == rank_index)
+
+	## Print out the Hosptial Name at that index
+	hospital <- state_subset[num_index, 2]
+	
+	retun(hosptial)
+
+}
+
+##From Xiaodan/Github
+## order(): returns permutation which rearranges first arg into ascending or descending 
+## order, breaking ties by further args
+## Hospital names will be ordered first by outcome_subset then by
+## Hosptial names according to state_subset (indicated above)
+## and will then be further analyzed by input num?
+## I'm struggling to understand the syntax here.  Dig deeper later
+## will [num] return num-th element OR return the value of num?
+
+rank_order <- function(hosp_names, outcome_subset, num) {
+	result <- hosp_names[order(outcome_subset, hosp_names)[num]]
+return(result)
+
+
+rankhospital <- function(state, outcome, num = "best") {
+
+## Read outcome data
+setwd(Desktop/Coursera Data Science...
+directory <- "./data/outcome-of-care-measures.csv"
+    data <- read.csv(directory, colClasses="character")
+
+## Check that state and outcome are valid
+data[, 11] <- as.numeric(data[,11])  ## heart attack
+data[, 17] <- as.numeric(data[,17])  ## heart failure
+data[, 23] <- as.numeric(data[,23])  ## pneumonia
+valid_outcomes <- c("heart attack", "heart failure", "pnuemonia")
+
+## IF statements to decifer if the the state and outcomes are valid
+if(!state %in% data$state){
+ stop("invalid State")
+}
+
+elseif(!outcome %in% valid_outcomes){
+	stop("invalid Outcome")
+}
+
+## Return hospital name in that state with the given rank
+## 30-day death rate
+else {
+if(outcome == "heart attack"){
+	hosp_rank <- rank_helper(data, 11, state, num) 
+	
+} elseif (outcome == "heart failure") {
+	hosp_rank <- rank_helper(data, 17, state, num)	
+	
+} else {
+	hosp_rank <- rank_helper(data, 23, state, num)
+	
+}
+result <- hosp_rank
+Return(result)
+}
+
+}

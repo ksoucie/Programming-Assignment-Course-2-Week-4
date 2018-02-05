@@ -1,0 +1,65 @@
+hospital_name <- function(data, col, state){
+
+	## Separate the state data: all the rows in column 7 that are = to the input state
+	state_subset <- data[data[, 7] == state]
+
+	## Separate the column with the desired outcome
+	outcome_subset <- state_subset[, col]
+
+	## find the smallest number within outcome_subset to be lowest moratlity rate
+	min_outcome <- min(outcome_subset,na.rm = TRUE)
+
+	## Determine which object is associated with the min
+	min_index <- which(outcome_subset == min)
+
+	## Print out the Hosptial Name at that index
+	hospital <- state_subset[min_index, 2]
+	
+	retun(hosptial)
+	
+
+
+}
+
+
+best <- function(state, outcome) {
+
+## Read outcome data
+setwd(Desktop/Coursera Data Science...
+directory <- "./data/outcome-of-care-measures.csv"
+    data <- read.csv(directory, colClasses="character")
+
+## Check that state and outcome are valid
+
+## Change these columns to numerics
+data[, 11] <- as.numeric(data[,11])  ## heart attack
+data[, 17] <- as.numeric(data[,17])  ## heart failure
+data[, 23] <- as.numeric(data[,23])  ## pneumonia
+valid_outcomes <- c("heart attack", "heart failure", "pnuemonia")
+
+## IF statements to decifer if the the state and outcomes are valid
+if(!state %in% data$state){
+ stop("invalid State")
+}
+
+elseif(!outcome %in% valid_outcomes){
+	stop("invalid Outcome")
+}
+
+## Return hospital name in that state with lowest 30-day death
+## rate
+
+else {
+if(outcome == "heart attack"){
+	best_hosp_name<- hospital_name(data, 11, state) 
+	
+} elseif (outcome == "heart failure") {
+	best_hosp_name<- hospital_name(data, 17, state)	
+	
+} else {
+	best_hosp_name<- hospital_name(data, 23, state)
+	
+}
+result <- best_hosp_name
+Return(result)
+}

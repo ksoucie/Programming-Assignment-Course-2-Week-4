@@ -1,0 +1,73 @@
+## Need a loop to work through each state
+
+
+rankall_helper<- function(state_subset, col, num){
+
+	outcome_subset <- as.numeric(state_subset[, col_num])
+	len <- dim(state_subset[!is.na(outcome_subset).])[1]
+	hosp_names <- state_subset[, 2]
+
+	## find the rank number within outcome_subset 
+	if (num == "best") {
+		rank_index <- rank_order(hosp_names, outcome_subset, 1)	
+	} elseif (num == "worst") {
+		rank_index <- rank_order(hosp_names, outcome_subset, len)
+	} elseif (num > len {
+		rank_index <- na
+	} else {
+		rank_index <- rank_order(hosp_names, outcome_subset, num)
+	}
+	result <- rank_index
+	return(result)
+}
+
+rank_order <- function(hosp_names, outcome_subset, num) {
+	result <- hosp_names[order(outcome_subset, hosp_names)[num]]
+return(result)
+
+
+
+rankall <- function(outcome, num = "best") {
+
+## Read outcome data
+setwd(Desktop/Coursera Data Science...
+directory <- "./data/outcome-of-care-measures.csv"
+    data <- read.csv(directory, colClasses="character")
+
+## Check that state and outcome are valid
+valid_outcomes <- c("heart attack", "heart failure", "pnuemonia")
+state_data <- sort(data$State)
+sd_len <- length(state_data) 
+
+##makes an empty vector to fill with the length of the number of states
+hospital <- rep("", sd_len)
+
+## IF statements to decifer if the the state and outcomes are valid
+if(!outcome %in% valid_outcomes){
+	stop("invalid Outcome")
+}
+
+## For each state, find the hospital of the given rank
+## Return a data frame with the hospital names and the
+## (abbreviated) state name
+else {
+	for(i in 1:sd_len)
+		state_subset <- data[data, 7] == state_arr[i], ]
+if(outcome == "heart attack"){
+	hospital[i] <- rankall_helper(state_subset, 11, num) 
+	
+} elseif (outcome == "heart failure") {
+	hospital[i]<- rankall_helper(state_subset, 17, num)	
+	
+} else {
+	hospital[i]<- rankall_helper(state_subset, 23, num)
+	
+}
+}}}
+result <- data.frame( hospital = hospital, state = state_data)
+Return(result)
+
+
+{
+
+}
